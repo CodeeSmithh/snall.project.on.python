@@ -1,0 +1,13 @@
+#...........Notification code............#
+
+ import time
+ from plyer import notification
+
+ if __name__ == "__main__":  # Corrected the syntax for the if statement
+     while True:
+         notification.notify(
+             title="ALERT!!!",  # Title of the notification
+             message="Take a break! It has been an hour.",  # Message content
+             timeout=10  # Notification will be visible for 10 seconds
+         )
+         time.sleep(3600)  # Sleep for 1 hour (3600 seconds)
