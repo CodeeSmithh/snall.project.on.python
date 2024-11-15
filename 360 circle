@@ -1,0 +1,13 @@
+#..............360 circle.............#
+
+ import turtle 
+ t = turtle.Turtle()
+ t.speed(12)
+ colors = ['black', 'white', 'yellow', 'green', 'blue', 'indigo', 'violet']
+ turtle.bgcolor('green')
+ for i in range(36):
+      t.color(colors[i % 2])
+      t.circle(100)
+      t.right(10)
+         
+ turtle.done()
