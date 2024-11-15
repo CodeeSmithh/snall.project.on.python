@@ -1,0 +1,95 @@
+#.............................snake game using python...........................#
+import pygame
+import sys
+import random
+import time
+
+# Direction Constants
+UP = 1
+RIGHT = 2
+DOWN = 3
+LEFT = 4
+
+class SnakeGame:
+    def __init__(self, width=800, height=600):
+        pygame.init()
+        self.width = width
+        self.height = height
+        self.display = pygame.display.set_mode((self.width, self.height))
+        pygame.display.set_caption( 'lound game')
+        self.clock = pygame.time.Clock()
+        self.reset_game()
+
+    def reset_game(self):
+        self.direction = RIGHT
+        self.snake_pos = [100, 50]
+        self.snake_body = [[100, 50], [90, 50], [80, 50], [70, 50]]
+        self.food_pos = self.get_random_food_pos()
+        self.score = 0
+
+    def get_random_food_pos(self):
+        return [random.randrange(1, (self.width//10)) * 10, random.randrange(1, (self.height//10)) * 10]
+
+    def play(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP and self.direction != DOWN:
+                        self.direction = UP
+                    elif event.key == pygame.K_DOWN and self.direction != UP:
+                        self.direction = DOWN
+                    elif event.key == pygame.K_LEFT and self.direction != RIGHT:
+                        self.direction = LEFT
+                    elif event.key == pygame.K_RIGHT and self.direction != LEFT:
+                        self.direction = RIGHT
+
+            # Move the snake
+            if self.direction == UP:
+                self.snake_pos[1] -= 10
+            elif self.direction == DOWN:
+                self.snake_pos[1] += 10
+            elif self.direction == LEFT:
+                self.snake_pos[0] -= 10
+            elif self.direction == RIGHT:
+                self.snake_pos[0] += 10
+
+            # Snake body mechanism
+            self.snake_body.insert(0, list(self.snake_pos))
+            if self.snake_pos == self.food_pos:
+                self.score += 1
+                self.food_pos = self.get_random_food_pos()
+            else:
+                self.snake_body.pop()
+
+            # Graphics
+            self.display.fill((0, 0, 0))
+            for pos in self.snake_body:
+                pygame.draw.rect(self.display, (0, 255, 0), pygame.Rect(pos[0], pos[1], 10, 10))
+            pygame.draw.rect(self.display, (255, 0, 0), pygame.Rect(self.food_pos[0], self.food_pos[1], 10, 10))
+
+            # Game Over conditions
+            if (self.snake_pos[0] < 0 or self.snake_pos[0] > self.width-10) or (self.snake_pos[1] < 0 or self.snake_pos[1] > self.height-10):
+                self.reset_game()
+            for block in self.snake_body[1:]:
+                if self.snake_pos[0] == block[0] and self.snake_pos[1] == block[1]:
+                    self.reset_game()
+
+            # Update display
+            pygame.display.update()
+            self.clock.tick(20)
+
+            # Display Score
+            font = pygame.font.Font(None, 36)
+            text = font.render(f"Score: {self.score}", 1, (255, 255, 255))
+            self.display.blit(text, (10, 10))
+            pygame.display.update()
+
+    def run(self):
+        self.play()
+
+if __name__ == "__main__":
+    game = SnakeGame()
+    game.run()
