@@ -1,0 +1,18 @@
+# download pip install instaloader in (cmd)
+import instaloader
+
+# Create an instance of Instaloader
+ig = instaloader.Instaloader()
+
+# Log in to your Instagram account (optional for public profiles)
+username = input("Enter your Instagram username: ")
+password = input("Enter your Instagram password: ")
+ig.login(username, password)
+
+# Prompt the user for the Instagram username of the profile to download
+dp = input("Enter the Instagram username of the profile to download: ")
+
+# Download the profile picture only
+ig.download_profile(dp, profile_pic_only=True)
+
+print(f"Profile picture of {dp} has been downloaded.")
