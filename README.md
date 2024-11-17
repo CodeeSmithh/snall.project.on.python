@@ -1,1 +1,0 @@
-# snall.project.on.python
